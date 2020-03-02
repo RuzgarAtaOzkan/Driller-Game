@@ -18,7 +18,7 @@ public class GenerateRandomMinerals : MonoBehaviour
         drillerPathFindindg = FindObjectOfType<DrillerPathfinding>(); // todo will serialize it later
         mineralsParent = GameObject.Find("MineralsParent");
         GenerateMinerals();
-        StartCoroutine(drillerPathFindindg.FindClosestMineral());
+        ProcessCoroutines();
     }
 
     public void GenerateMinerals()
@@ -30,17 +30,36 @@ public class GenerateRandomMinerals : MonoBehaviour
             randomTerrainPos.z = Random.Range(terr.terrainData.size.z - (terr.terrainData.size.z - 10f), terr.terrainData.size.z - 10f);
             randomTerrainPos.y = 2.6f;
             GameObject instantiatedMineral = Instantiate(mineral, randomTerrainPos, Quaternion.identity);
-            ManageMineralColors(instantiatedMineral);
+            PickRandomMineralColor(instantiatedMineral);
             instantiatedMineral.transform.SetParent(mineralsParent.transform);
         }
     }
 
-    void ManageMineralColors(GameObject instantiatedMineral)
+    private void PickRandomMineralColor(GameObject instantiatedMineral)
     {
         Material[] materialsToPlace = new Material[instantiatedMineral.GetComponent<MeshRenderer>().materials.Length];
         int ramdonNumber = Random.Range(0, materials.Length);
         Material randomMaterial = materials[ramdonNumber];
         for (int j = 0; j < materialsToPlace.Length; j++) { materialsToPlace[j] = randomMaterial; }
         instantiatedMineral.GetComponent<MeshRenderer>().materials = materialsToPlace;
+    }
+
+    private IEnumerator CheckMineralAmount()
+    {
+        while (true)
+        {
+            var mineralAmountInHierarchy = GameObject.FindGameObjectsWithTag("Mineral");
+            if (mineralAmountInHierarchy.Length <= 6)
+            {
+                GenerateMinerals();
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    private void ProcessCoroutines()
+    {
+        StartCoroutine(drillerPathFindindg.PickRandomPosOrClosestMineral());
+        StartCoroutine(CheckMineralAmount());
     }
 }

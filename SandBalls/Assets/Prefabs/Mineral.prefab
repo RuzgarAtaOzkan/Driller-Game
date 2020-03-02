@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1271069814111360668}
   - component: {fileID: 1271069814111360669}
   m_Layer: 0
-  m_Name: Sphere
-  m_TagString: Untagged
+  m_Name: Mineral
+  m_TagString: Mineral
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

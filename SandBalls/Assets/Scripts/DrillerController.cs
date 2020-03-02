@@ -46,7 +46,7 @@ public class DrillerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.name == "Mineral(Clone)")
+        if (collision.gameObject.tag == "Mineral")
         {
             Destroy(collision.gameObject);
         }
