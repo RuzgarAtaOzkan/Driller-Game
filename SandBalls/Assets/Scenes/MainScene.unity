@@ -473,7 +473,7 @@ MonoBehaviour:
   terrainDeformationTextureNum: 1
   driller: {fileID: 265629577}
   drillerBot: {fileID: 2132090979}
-  inds: 4
+  inds: 6
   go: {fileID: 0}
 --- !u!114 &1317160463
 MonoBehaviour:
@@ -703,21 +703,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Driller Bot
       objectReference: {fileID: 0}
-    - target: {fileID: 2176195777433841498, guid: 5ad86b7350bb8824ab9cd4af587d8330,
-        type: 3}
-      propertyPath: m_TagString
-      value: Bot
-      objectReference: {fileID: 0}
-    - target: {fileID: 2176195777433841505, guid: 5ad86b7350bb8824ab9cd4af587d8330,
-        type: 3}
-      propertyPath: m_Speed
-      value: 3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2176195777433841509, guid: 5ad86b7350bb8824ab9cd4af587d8330,
-        type: 3}
-      propertyPath: terr
-      value: 
-      objectReference: {fileID: 1317160460}
     - target: {fileID: 2176195777433841510, guid: 5ad86b7350bb8824ab9cd4af587d8330,
         type: 3}
       propertyPath: m_LocalPosition.x

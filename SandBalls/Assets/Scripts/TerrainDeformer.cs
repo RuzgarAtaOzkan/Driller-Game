@@ -43,12 +43,10 @@ public class TerrainDeformer : MonoBehaviour
     private float[,] heightMapBackup;
     private float[,,] alphaMapBackup;
 
-
     // todo my part
     Touch touch;
     [SerializeField] Transform driller;
     [SerializeField] Transform drillerBot;
-
 
     void Start()
     {
@@ -63,6 +61,8 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
+
+        //StartCoroutine(SetHeightsBackToNormal(positionsToNormalize, inds));
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -74,14 +74,14 @@ public class TerrainDeformer : MonoBehaviour
             terr.terrainData.SetAlphamaps(0, 0, alphaMapBackup);
         }
     }
+
     public float inds;
     public Transform go;
+
     private void Update()
     {
         DeformTerrain(driller.position, inds);
-
         DeformTerrain(drillerBot.position, inds);
-
     }
 
     public void DestroyTerrain(Vector3 pos, float craterSizeInMeters)
@@ -90,6 +90,8 @@ public class TerrainDeformer : MonoBehaviour
         TextureDeformation(pos, craterSizeInMeters * 1.5f);
     }
 
+
+    List<Vector3> positionsToNormalize = new List<Vector3>();
     protected void DeformTerrain(Vector3 pos, float craterSizeInMeters)
     {
         //get the heights only once keep it and reuse, precalculate as much as possible
@@ -133,6 +135,26 @@ public class TerrainDeformer : MonoBehaviour
 
         // set the new height
         terr.terrainData.SetHeights(heightMapStartPosX, heightMapStartPosZ, heights);
+
+        positionsToNormalize.Add(pos);
+    }
+
+    IEnumerator SetHeightsBackToNormal(List<Vector3> pos, float craterSizeInMeters)
+    {
+        while (true)
+        {
+            float terrHeight = terr.terrainData.GetHeight(1, 1);
+            float[,] normalHeight = new float[(int)terrHeight, (int)terrHeight];
+
+            for (int i = 0; i < positionsToNormalize.Count / 4; i++)
+            {
+                terr.terrainData.SetHeights((int)pos[i].x, (int)pos[i].z, normalHeight);
+            }
+
+            positionsToNormalize.RemoveRange(0, positionsToNormalize.Count / 4);
+
+            yield return new WaitForSeconds(4f);
+        }
     }
 
     protected void TextureDeformation(Vector3 pos, float craterSizeInMeters)

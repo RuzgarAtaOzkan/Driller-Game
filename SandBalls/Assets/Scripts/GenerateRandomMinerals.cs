@@ -48,7 +48,7 @@ public class GenerateRandomMinerals : MonoBehaviour
     {
         while (true)
         {
-            var mineralAmountInHierarchy = GameObject.FindGameObjectsWithTag("Mineral");
+            GameObject[] mineralAmountInHierarchy = GameObject.FindGameObjectsWithTag("Mineral");
             if (mineralAmountInHierarchy.Length <= 6)
             {
                 GenerateMinerals();
