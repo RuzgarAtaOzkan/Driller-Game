@@ -49,6 +49,7 @@ public class TerrainDeformer : MonoBehaviour
     [SerializeField] Transform driller;
     [SerializeField] Transform drillerBot;
 
+
     void Start()
     {
         terr = this.GetComponent<Terrain>();
@@ -78,7 +79,9 @@ public class TerrainDeformer : MonoBehaviour
     private void Update()
     {
         DeformTerrain(driller.position, inds);
+
         DeformTerrain(drillerBot.position, inds);
+
     }
 
     public void DestroyTerrain(Vector3 pos, float craterSizeInMeters)

@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetDriller: {fileID: 265629577}
-  offset: {x: 0, y: 25, z: 0}
+  offset: {x: 0, y: 35, z: 0}
 --- !u!1 &556112146
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +473,7 @@ MonoBehaviour:
   terrainDeformationTextureNum: 1
   driller: {fileID: 265629577}
   drillerBot: {fileID: 2132090979}
-  inds: 6
+  inds: 4
   go: {fileID: 0}
 --- !u!114 &1317160463
 MonoBehaviour:
@@ -487,7 +487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f1c18d72e21d44d92cbb543bd1b0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terr: {fileID: 1317160460}
   mineral: {fileID: 1271069814111360670, guid: f704507d5967dcf46a3410a2ede8a2d9, type: 3}
   materials:
   - {fileID: 2100000, guid: f617e0131cba37740984555574ac763b, type: 2}
@@ -704,6 +703,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Driller Bot
       objectReference: {fileID: 0}
+    - target: {fileID: 2176195777433841498, guid: 5ad86b7350bb8824ab9cd4af587d8330,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bot
+      objectReference: {fileID: 0}
     - target: {fileID: 2176195777433841505, guid: 5ad86b7350bb8824ab9cd4af587d8330,
         type: 3}
       propertyPath: m_Speed
@@ -717,7 +721,7 @@ PrefabInstance:
     - target: {fileID: 2176195777433841510, guid: 5ad86b7350bb8824ab9cd4af587d8330,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 69.9
+      value: 73.84
       objectReference: {fileID: 0}
     - target: {fileID: 2176195777433841510, guid: 5ad86b7350bb8824ab9cd4af587d8330,
         type: 3}

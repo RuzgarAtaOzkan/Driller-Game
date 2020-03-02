@@ -12,10 +12,13 @@ public class DrillerPathfinding : MonoBehaviour
     GameObject mineralsParent; //warning, there has to be a gameobject calles MineralsParent
     Terrain terr; // warning, there has to be game object called terrain in hierarchy
 
+    TerrainDeformer terrainDeformer;
+
     float waitTime; //wait time before finding a new destination target, by dividing target distance with speed of agent
     
     void Start()
     {
+        terrainDeformer = FindObjectOfType<TerrainDeformer>(); // todo will remove experimental
         terr = GameObject.Find("Terrain").GetComponent<Terrain>(); // todo might serialize it later
         agent = GetComponent<NavMeshAgent>();
         mineralsParent = GameObject.Find("MineralsParent");
@@ -77,6 +80,14 @@ public class DrillerPathfinding : MonoBehaviour
     {
         if (collision.gameObject.tag == "Mineral")
         {
+            Vector3 drillerScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            Vector3 mineralScale = new Vector3(collision.transform.localScale.x, collision.transform.localScale.y, collision.transform.localScale.z);
+
+            
+            transform.localScale = new Vector3(drillerScale.x + (mineralScale.x / 2), drillerScale.y + (mineralScale.y / 2), drillerScale.z + (mineralScale.z / 2));
+
+            terrainDeformer.inds = transform.localScale.x * 3f;
+
             Destroy(collision.gameObject);
         }
     }

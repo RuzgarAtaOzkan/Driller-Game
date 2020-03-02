@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7354397732447652955}
   - component: {fileID: 6504285632210604782}
   m_Layer: 0
-  m_Name: Driller 1
+  m_Name: Driller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
