@@ -48,6 +48,7 @@ public class TerrainDeformer : MonoBehaviour
     [SerializeField] Transform driller;
     [SerializeField] Transform drillerBot;
 
+    [System.Obsolete]
     void Start()
     {
         terr = this.GetComponent<Terrain>();
@@ -61,8 +62,6 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
-        SetHeightsBackToNormal();
-        
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -82,18 +81,6 @@ public class TerrainDeformer : MonoBehaviour
     {
         DeformTerrain(driller.position, inds);
         DeformTerrain(drillerBot.position, inds);
-    }
-
-    void SetHeightsBackToNormal()
-    {
-        int xRes = terr.terrainData.heightmapResolution;
-        int yRes = terr.terrainData.alphamapHeight;
-
-        float[,] heights = terr.terrainData.GetHeights(0, 0, xRes, yRes);
-
-        heights[20, 20] = 0.1f;
-
-        terr.terrainData.SetHeights(0, 0, heights);
     }
 
     public void DestroyTerrain(Vector3 pos, float craterSizeInMeters)
