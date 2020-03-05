@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-//github push test
-
 public class DrillerPathfinding : MonoBehaviour
 {
     NavMeshAgent agent;
