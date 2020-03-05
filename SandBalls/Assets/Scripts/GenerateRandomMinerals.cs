@@ -25,8 +25,12 @@ public class GenerateRandomMinerals : MonoBehaviour
     {
         for (int i = 0; i < mineralAmount; i++)
         {
-            float randomXPosForMineral = Random.Range(terr.transform.position.x + 10f, terr.transform.position.x + terr.terrainData.size.x - 10f);
-            float randomZPosForMineral = Random.Range(terr.transform.position.z + 10f, terr.transform.position.z + terr.terrainData.size.z - 10f);
+            float terrainXPos = terr.transform.position.x;
+            float terrainZPos = terr.transform.position.z;
+            float terrainXSize = terr.terrainData.size.x;
+            float terrainZSize = terr.terrainData.size.z;
+            float randomXPosForMineral = Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
+            float randomZPosForMineral = Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
             Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
             GameObject instantiatedMineral = Instantiate(mineral, randomTerrainPos, Quaternion.identity);
             PickRandomMineralColor(instantiatedMineral);
@@ -58,7 +62,7 @@ public class GenerateRandomMinerals : MonoBehaviour
 
     private void ProcessCoroutines()
     {
-        StartCoroutine(drillerPathFindindg.PickRandomPosOrClosestMineral());
         StartCoroutine(CheckMineralAmount());
+        StartCoroutine(drillerPathFindindg.PickRandomPosOrClosestMineral());
     }
 }

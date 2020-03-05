@@ -30,8 +30,8 @@ public class DrillerPathfinding : MonoBehaviour
         while (true)
         {
             randomTarget = UnityEngine.Random.Range(0, 2);
-            if (randomTarget < 0.8f) { PickRandomPosOnTerrain(); }
-            else if (randomTarget >= 0.8f) { PickClosestMineralOnTerrain(); }
+            if (randomTarget < 1f) { PickRandomPosOnTerrain(); }
+            else if (randomTarget >= 1f) { PickClosestMineralOnTerrain(); }
             yield return new WaitForSeconds(waitTime);
         }
     }

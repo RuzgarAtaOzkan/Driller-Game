@@ -61,15 +61,6 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
-
-        int xRes = terr.terrainData.heightmapResolution;
-        int zRes = terr.terrainData.heightmapResolution;
-
-        float[,] heights = terr.terrainData.GetHeights(0, 0, xRes, zRes);
-
-        heights[(int)driller.position.x, (int)driller.position.z] = 0f;
-
-        terr.terrainData.SetHeights(0, 0, heights);
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -87,9 +78,8 @@ public class TerrainDeformer : MonoBehaviour
 
     private void Update()
     {
-        //DeformTerrain(driller.position, inds);
-        //DeformTerrain(drillerBot.position, inds);
-
+        DeformTerrain(driller.position, inds);
+        DeformTerrain(drillerBot.position, inds);
     }
 
     public void DestroyTerrain(Vector3 pos, float craterSizeInMeters)
@@ -101,7 +91,7 @@ public class TerrainDeformer : MonoBehaviour
     protected void DeformTerrain(Vector3 pos, float craterSizeInMeters)
     {
         //get the heights only once keep it and reuse, precalculate as much as possible
-        Vector3 terrainPos = GetRelativeTerrainPositionFromPos(pos, terr, hmWidth, hmHeight);//terr.terrainData.heightmapResolution/terr.terrainData.heightmapWidth
+        Vector3 terrainPos = GetRelativeTerrainPositionFromPos(pos, terr, hmWidth, hmHeight); //terr.terrainData.heightmapResolution/terr.terrainData.heightmapWidth
         int heightMapCraterWidth = (int)(craterSizeInMeters * (hmWidth / terr.terrainData.size.x));
         int heightMapCraterLength = (int)(craterSizeInMeters * (hmHeight / terr.terrainData.size.z));
         int heightMapStartPosX = (int)(terrainPos.x - (heightMapCraterWidth / 2));
