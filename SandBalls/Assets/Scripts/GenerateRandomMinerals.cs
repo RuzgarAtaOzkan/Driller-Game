@@ -25,10 +25,9 @@ public class GenerateRandomMinerals : MonoBehaviour
     {
         for (int i = 0; i < mineralAmount; i++)
         {
-            Vector3 randomTerrainPos = new Vector3();
-            randomTerrainPos.x = Random.Range(terr.terrainData.size.x - (terr.terrainData.size.x - 10f), terr.terrainData.size.x - 10f);
-            randomTerrainPos.z = Random.Range(terr.terrainData.size.z - (terr.terrainData.size.z - 10f), terr.terrainData.size.z - 10f);
-            randomTerrainPos.y = 2.6f;
+            float randomXPosForMineral = Random.Range(terr.transform.position.x + 10f, terr.transform.position.x + terr.terrainData.size.x - 10f);
+            float randomZPosForMineral = Random.Range(terr.transform.position.z + 10f, terr.transform.position.z + terr.terrainData.size.z - 10f);
+            Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
             GameObject instantiatedMineral = Instantiate(mineral, randomTerrainPos, Quaternion.identity);
             PickRandomMineralColor(instantiatedMineral);
             instantiatedMineral.transform.SetParent(mineralsParent.transform);

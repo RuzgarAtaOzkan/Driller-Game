@@ -38,7 +38,9 @@ public class DrillerPathfinding : MonoBehaviour
 
     private void PickRandomPosOnTerrain()
     {
-        Vector3 randomPos = new Vector3(UnityEngine.Random.Range(terr.terrainData.size.x - (terr.terrainData.size.x - 10f), terr.terrainData.size.x - 10f), transform.position.y, UnityEngine.Random.Range(terr.terrainData.size.z - (terr.terrainData.size.z - 10f), terr.terrainData.size.z - 10f));
+        float randomXPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.x + 10f, terr.transform.position.x + (terr.terrainData.size.x - 10f));
+        float randomZPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.z + 10f, terr.transform.position.z + (terr.terrainData.size.z - 10f));
+        Vector3 randomPos = new Vector3(randomXPosOnTerrain, transform.position.y, randomZPosOnTerrain);
         agent.SetDestination(randomPos);
         waitTime = Vector3.Distance(transform.position, randomPos) / agent.speed;
         if (waitTime > 10f) { waitTime = 1f; }
