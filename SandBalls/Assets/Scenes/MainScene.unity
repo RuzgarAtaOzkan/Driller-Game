@@ -490,7 +490,7 @@ MonoBehaviour:
   mineral: {fileID: 1271069814111360670, guid: f704507d5967dcf46a3410a2ede8a2d9, type: 3}
   materials:
   - {fileID: 2100000, guid: f617e0131cba37740984555574ac763b, type: 2}
-  - {fileID: 2100000, guid: 73c3fa65e1f29714eae540264408c2a8, type: 2}
+  - {fileID: 2100000, guid: 830f1f68be7452240af56f2685ab9561, type: 2}
   - {fileID: 2100000, guid: a85dbc22c35cae5449680555947a84f5, type: 2}
   - {fileID: 2100000, guid: 0ec5ed454a84cd847a58bc51c1473f02, type: 2}
 --- !u!1 &1574146261

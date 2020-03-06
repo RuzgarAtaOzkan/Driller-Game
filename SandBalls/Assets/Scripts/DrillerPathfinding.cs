@@ -8,7 +8,7 @@ public class DrillerPathfinding : MonoBehaviour
 {
     NavMeshAgent agent;
     GameObject mineralsParent; //warning, there has to be a gameobject calles MineralsParent
-    Terrain terr; // warning, there has to be game object called terrain in hierarchy
+    Terrain terr; // warning, there has to be game object called Terrain in hierarchy
 
     TerrainDeformer terrainDeformer;
 
@@ -24,10 +24,9 @@ public class DrillerPathfinding : MonoBehaviour
 
     public IEnumerator PickRandomPosOrClosestMineral()
     {
-        int randomTarget;
         while (true)
         {
-            randomTarget = UnityEngine.Random.Range(0, 2);
+            int randomTarget = UnityEngine.Random.Range(0, 2);
             if (randomTarget < 1f) { PickRandomPosOnTerrain(); }
             else if (randomTarget >= 1f) { PickClosestMineralOnTerrain(); }
             yield return new WaitForSeconds(waitTime);
@@ -76,7 +75,7 @@ public class DrillerPathfinding : MonoBehaviour
         return minValue;
     }
 
-    private void ManageScale(Collision collision)
+    private void EatMineral(Collision collision)
     {
         Vector3 drillerScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
         Vector3 mineralScale = new Vector3(collision.transform.localScale.x, collision.transform.localScale.y, collision.transform.localScale.z);
@@ -88,7 +87,7 @@ public class DrillerPathfinding : MonoBehaviour
     {
         if (collision.gameObject.tag == "Mineral")
         {
-            //ManageScale(collision);
+            //EatMineral(collision);
             Destroy(collision.gameObject);
         }
     }
