@@ -36,10 +36,8 @@ public class DrillerController : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
         Vector3 position = new Vector3(x, 0f, z);
         rb.MovePosition(rb.position + position * 2f * Time.deltaTime);
-
         if (position.magnitude > 0)
         {
             Quaternion rotations = Quaternion.LookRotation(position, Vector3.up);

@@ -13,6 +13,7 @@ public class DrillerPathfinding : MonoBehaviour
     TerrainDeformer terrainDeformer;
 
     float waitTime; //wait time before finding a new destination target, by dividing target distance with speed of agent
+    public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
     
     void Start()
     {
@@ -20,10 +21,24 @@ public class DrillerPathfinding : MonoBehaviour
         terr = GameObject.Find("Terrain").GetComponent<Terrain>(); // todo might serialize it later
         agent = GetComponent<NavMeshAgent>();
         mineralsParent = GameObject.Find("MineralsParent");
+        SpawnOnRandomPosOnTerrain();
     }
 
-    public IEnumerator PickRandomPosOrClosestMineral()
+    private void SpawnOnRandomPosOnTerrain()
     {
+        float terrainXPos = terr.transform.position.x;
+        float terrainZPos = terr.transform.position.z;
+        float terrainXSize = terr.terrainData.size.x;
+        float terrainZSize = terr.terrainData.size.z;
+        float randomXPosForMineral = UnityEngine.Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
+        float randomZPosForMineral = UnityEngine.Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
+        transform.position = randomTerrainPos;
+    }
+
+    public IEnumerator PickRandomPosOrClosestMineral() // Main pathfinding algorithm of the driller bot, call this function when need it
+    {
+        isCoroutineStarted = true;
         while (true)
         {
             int randomTarget = UnityEngine.Random.Range(0, 2);
@@ -37,8 +52,12 @@ public class DrillerPathfinding : MonoBehaviour
     {
         if (this != null)
         {
-            float randomXPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.x + 10f, terr.transform.position.x + (terr.terrainData.size.x - 10f));
-            float randomZPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.z + 10f, terr.transform.position.z + (terr.terrainData.size.z - 10f));
+            float terrainXPos = terr.transform.position.x;
+            float terrainZPos = terr.transform.position.z;
+            float terrainXSize = terr.terrainData.size.x;
+            float terrainZSize = terr.terrainData.size.z;
+            float randomXPosOnTerrain = UnityEngine.Random.Range(terrainXPos + 10f, terrainXPos + (terrainXSize - 10f));
+            float randomZPosOnTerrain = UnityEngine.Random.Range(terrainZPos + 10f, terrainZSize + (terrainZSize - 10f));
             Vector3 randomPos = new Vector3(randomXPosOnTerrain, transform.position.y, randomZPosOnTerrain);
             agent.SetDestination(randomPos);
             waitTime = Vector3.Distance(transform.position, randomPos) / agent.speed;

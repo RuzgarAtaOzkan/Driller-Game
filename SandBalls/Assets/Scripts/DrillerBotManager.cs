@@ -6,7 +6,6 @@ public class DrillerBotManager : MonoBehaviour
 {
     TerrainDeformer terrainDeformer;
     GenerateRandomMinerals generateRandomMinerals;
-    DrillerPathfinding[] drillerPathfindings;
 
     private void Start()
     {
@@ -32,6 +31,9 @@ public class DrillerBotManager : MonoBehaviour
 
     public void ApplyPathfindToAllDrillerPathfindings()
     {
-        foreach (DrillerPathfinding drillerPathfinding in CountDrillerBots()) { StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral()); }
+        foreach (DrillerPathfinding drillerPathfinding in CountDrillerBots()) 
+        { 
+            StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral());
+        }
     }
 }

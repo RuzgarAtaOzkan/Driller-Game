@@ -43,7 +43,7 @@ public class TerrainDeformer : MonoBehaviour
     private float[,] heightMapBackup;
     private float[,,] alphaMapBackup;
 
-    // todo my part
+    // todo my part of script
     [SerializeField] Transform driller;
     DrillerBotManager drillerBotManager;
     public DrillerPathfinding[] drillerPathfindings;
@@ -67,6 +67,7 @@ public class TerrainDeformer : MonoBehaviour
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
         //ProcessTerrainNormalization(); todo still in progress
+        ProcessCoroutines();
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -88,7 +89,30 @@ public class TerrainDeformer : MonoBehaviour
         ProcessDrillerBots();
     }
 
-    //Driller bots management part >
+    // General Coroutines to apply in start
+    private void ProcessCoroutines()
+    {
+        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding()); // Update the drillerPathfindings count in every so
+    }
+
+    // todo will add updater of drillerpathfindings to applypathfind algorithm
+    //Driller bots management part ======================> 
+    IEnumerator UpdateDrillerBotsCountAndApplyPathfinding()
+    {
+        while (true)
+        {
+            drillerPathfindings = drillerBotManager.CountDrillerBots();
+            foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
+            {
+                if (!drillerPathfinding.isCoroutineStarted)
+                {
+                    StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral());
+                }
+            }
+            yield return new WaitForSeconds(2f);
+        }
+    }
+
     private void ProcessDrillerBots()
     {
         foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
