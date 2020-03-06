@@ -92,7 +92,7 @@ public class TerrainDeformer : MonoBehaviour
     // General Coroutines to apply in start
     private void ProcessCoroutines()
     {
-        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding()); // Update the drillerPathfindings count in every so
+        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding()); // Update the drillerPathfindings count in every so and apply the pathfinding algorithm if it is not started
     }
 
     // todo will add updater of drillerpathfindings to applypathfind algorithm
