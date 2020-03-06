@@ -7,15 +7,17 @@ public class GenerateRandomMinerals : MonoBehaviour
     int mineralAmount = 60;
     Terrain terr;
     GameObject mineralsParent;
-    DrillerPathfinding[] drillerPathFindings;
+    DrillerBotManager drillerBotManager;
+
+    public DrillerPathfinding[] drillerPathfindings;
 
     [SerializeField] GameObject mineral;
     [SerializeField] Material[] materials;
     
     void Start()
     {
+        drillerBotManager = FindObjectOfType<DrillerBotManager>();
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
-        drillerPathFindings = FindObjectsOfType<DrillerPathfinding>(); // todo will serialize it later
         mineralsParent = GameObject.Find("MineralsParent");
         GenerateMinerals();
         ProcessCoroutines();
@@ -63,6 +65,6 @@ public class GenerateRandomMinerals : MonoBehaviour
     private void ProcessCoroutines()
     {
         StartCoroutine(CheckMineralAmount());
-        foreach (DrillerPathfinding drillerPathfinding in drillerPathFindings) { StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral()); }
+        foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings) { StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral()); }
     }
 }

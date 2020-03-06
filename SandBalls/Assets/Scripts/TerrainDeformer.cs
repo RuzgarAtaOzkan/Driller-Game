@@ -45,7 +45,8 @@ public class TerrainDeformer : MonoBehaviour
 
     // todo my part
     [SerializeField] Transform driller;
-    DrillerPathfinding[] drillerPathfindings;
+    DrillerBotManager drillerBotManager;
+    public DrillerPathfinding[] drillerPathfindings;
 
     List<int> xPositions = new List<int>();
     List<int> zPositions = new List<int>();
@@ -54,6 +55,7 @@ public class TerrainDeformer : MonoBehaviour
     void Start()
     {
         terr = this.GetComponent<Terrain>();
+        drillerBotManager = FindObjectOfType<DrillerBotManager>();
         hmWidth = terr.terrainData.heightmapResolution;
         hmHeight = terr.terrainData.heightmapResolution;
         alphaMapWidth = terr.terrainData.alphamapWidth;
@@ -64,7 +66,6 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
-        ProcessDrillerBotCounter();
         ProcessTerrainNormalization();
     }
 
@@ -88,26 +89,12 @@ public class TerrainDeformer : MonoBehaviour
     }
 
     //Driller bots management part >
-    IEnumerator KeepTrackDrillerBotsInHierarchy()
-    {
-        while (true)
-        {
-            drillerPathfindings = FindObjectsOfType<DrillerPathfinding>();
-            yield return new WaitForSeconds(1f);
-        }
-    }
-
     private void ProcessDrillerBots()
     {
         foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
         {
             DeformTerrain(drillerPathfinding.transform.position, inds);
         }
-    }
-
-    private void ProcessDrillerBotCounter()
-    {
-        StartCoroutine(KeepTrackDrillerBotsInHierarchy());
     }
     //============================================
 

@@ -11,13 +11,25 @@ public class DrillerController : MonoBehaviour
     {
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         rb = GetComponent<Rigidbody>();
-        transform.position = new Vector3(Random.Range(10f, terr.terrainData.size.x - 10f), 1.5f, Random.Range(10f, terr.terrainData.size.z - 10f));
-        transform.rotation = Quaternion.Euler(90f, transform.rotation.y, transform.rotation.z);
+        PickRandomPosOnTerrain();
     }
 
     void Update()
     {
         MoveDriller();
+    }
+
+    private void PickRandomPosOnTerrain()
+    {
+        float terrainXPos = terr.transform.position.x;
+        float terrainZPos = terr.transform.position.z;
+        float terrainXSize = terr.terrainData.size.x;
+        float terrainZSize = terr.terrainData.size.z;
+        float randomXPosForMineral = Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
+        float randomZPosForMineral = Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
+        transform.position = randomTerrainPos;
+        transform.rotation = Quaternion.Euler(90f, transform.rotation.y, transform.rotation.z);
     }
 
     private void MoveDriller()
