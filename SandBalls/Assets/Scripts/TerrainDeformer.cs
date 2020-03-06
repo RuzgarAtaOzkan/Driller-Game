@@ -45,7 +45,7 @@ public class TerrainDeformer : MonoBehaviour
 
     // todo my part
     [SerializeField] Transform driller;
-    DrillerPathfinding[] drillerPathdings;
+    DrillerPathfinding[] drillerPathfindings;
 
     List<int> xPositions = new List<int>();
     List<int> zPositions = new List<int>();
@@ -92,14 +92,14 @@ public class TerrainDeformer : MonoBehaviour
     {
         while (true)
         {
-            drillerPathdings = FindObjectsOfType<DrillerPathfinding>();
+            drillerPathfindings = FindObjectsOfType<DrillerPathfinding>();
             yield return new WaitForSeconds(1f);
         }
     }
 
     private void ProcessDrillerBots()
     {
-        foreach (DrillerPathfinding drillerPathfinding in drillerPathdings)
+        foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
         {
             DeformTerrain(drillerPathfinding.transform.position, inds);
         }
