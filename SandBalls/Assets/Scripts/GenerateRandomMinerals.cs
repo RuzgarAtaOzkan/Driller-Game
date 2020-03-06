@@ -65,6 +65,6 @@ public class GenerateRandomMinerals : MonoBehaviour
     private void ProcessCoroutines()
     {
         StartCoroutine(CheckMineralAmount());
-        foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings) { StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral()); }
+        drillerBotManager.ApplyPathfindToAllDrillerPathfindings();
     }
 }

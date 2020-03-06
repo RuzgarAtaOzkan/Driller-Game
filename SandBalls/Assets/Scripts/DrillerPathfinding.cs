@@ -35,12 +35,15 @@ public class DrillerPathfinding : MonoBehaviour
 
     private void PickRandomPosOnTerrain()
     {
-        float randomXPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.x + 10f, terr.transform.position.x + (terr.terrainData.size.x - 10f));
-        float randomZPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.z + 10f, terr.transform.position.z + (terr.terrainData.size.z - 10f));
-        Vector3 randomPos = new Vector3(randomXPosOnTerrain, transform.position.y, randomZPosOnTerrain);
-        agent.SetDestination(randomPos);
-        waitTime = Vector3.Distance(transform.position, randomPos) / agent.speed;
-        if (waitTime > 10f) { waitTime = 1f; }
+        if (this != null)
+        {
+            float randomXPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.x + 10f, terr.transform.position.x + (terr.terrainData.size.x - 10f));
+            float randomZPosOnTerrain = UnityEngine.Random.Range(terr.transform.position.z + 10f, terr.transform.position.z + (terr.terrainData.size.z - 10f));
+            Vector3 randomPos = new Vector3(randomXPosOnTerrain, transform.position.y, randomZPosOnTerrain);
+            agent.SetDestination(randomPos);
+            waitTime = Vector3.Distance(transform.position, randomPos) / agent.speed;
+            if (waitTime > 10f) { waitTime = 1f; }
+        }
     }
 
     private void PickClosestMineralOnTerrain()
