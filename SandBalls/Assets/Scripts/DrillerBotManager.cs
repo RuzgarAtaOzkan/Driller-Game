@@ -11,8 +11,31 @@ public class DrillerBotManager : MonoBehaviour
     {
         terrainDeformer = FindObjectOfType<TerrainDeformer>();
         generateRandomMinerals = FindObjectOfType<GenerateRandomMinerals>();
-        StartCoroutine(KeepTrackOfDrillerBotsInHierarchy());
+        ProcessCoroutines();
     }
+
+    private void ProcessCoroutines()
+    {
+        StartCoroutine(KeepTrackOfDrillerBotsInHierarchy());
+        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding());
+    }
+
+    IEnumerator UpdateDrillerBotsCountAndApplyPathfinding()
+    {
+        while (true)
+        {
+            DrillerPathfinding[] drillerPathfindings = CountDrillerBots();
+            foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
+            {
+                if (!drillerPathfinding.isCoroutineStarted)
+                {
+                    StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral());
+                }
+            }
+            yield return new WaitForSeconds(2f);
+        }
+    }
+
     public IEnumerator KeepTrackOfDrillerBotsInHierarchy()
     {
         while (true)
