@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-// github test improved
+// github test
 
 public class DrillerPathfinding : MonoBehaviour
 {
