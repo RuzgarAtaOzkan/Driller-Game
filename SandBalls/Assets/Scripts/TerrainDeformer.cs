@@ -45,11 +45,7 @@ public class TerrainDeformer : MonoBehaviour
 
     // todo my part
     [SerializeField] Transform driller;
-    [SerializeField] Transform drillerBot;
-    [SerializeField] Transform drillerBot1;
-
-    int xPos;
-    int zPos;
+    DrillerPathfinding[] drillerPathdings;
 
     List<int> xPositions = new List<int>();
     List<int> zPositions = new List<int>();
@@ -68,7 +64,8 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
-        ProcessTerrainNormalizationCoroutines();
+        ProcessDrillerBotCounter();
+        ProcessTerrainNormalization();
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -87,45 +84,51 @@ public class TerrainDeformer : MonoBehaviour
     private void Update()
     {
         DeformTerrain(driller.position, inds);
-        DeformTerrain(drillerBot.position, inds);
-        DeformTerrain(drillerBot1.position, inds);
+        ProcessDrillerBots();
     }
 
-    IEnumerator KeepTrackDrillerPositionsOnTerrain()
+    //Driller bots management part >
+    IEnumerator KeepTrackDrillerBotsInHierarchy()
     {
         while (true)
         {
-            xPositions.Add(xPos);
-            zPositions.Add(zPos);
-            yield return new WaitForSeconds(0.5f);
+            drillerPathdings = FindObjectsOfType<DrillerPathfinding>();
+            yield return new WaitForSeconds(1f);
         }
     }
 
+    private void ProcessDrillerBots()
+    {
+        foreach (DrillerPathfinding drillerPathfinding in drillerPathdings)
+        {
+            DeformTerrain(drillerPathfinding.transform.position, inds);
+        }
+    }
+
+    private void ProcessDrillerBotCounter()
+    {
+        StartCoroutine(KeepTrackDrillerBotsInHierarchy());
+    }
+    //============================================
+
+    //Terrain normalization part >
     IEnumerator NormalizeDrillerPositionsOnTerrain()
     {
         while (true)
         {
             NormalizeTerrain(driller.position, inds);
-
             for (int i = 0; i < xPositions.Count; i++)
             {
                 xPositions.RemoveAt(i);
                 zPositions.RemoveAt(i);
             }
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(15f);
         }
     }
 
-    private void ProcessTerrainNormalizationCoroutines()
+    private void ProcessTerrainNormalization()
     {
-        StartCoroutine(KeepTrackDrillerPositionsOnTerrain());
         StartCoroutine(NormalizeDrillerPositionsOnTerrain());
-    }
-
-    public void DestroyTerrain(Vector3 pos, float craterSizeInMeters)
-    {
-        DeformTerrain(pos, craterSizeInMeters);
-        TextureDeformation(pos, craterSizeInMeters * 1.5f);
     }
 
     protected void NormalizeTerrain(Vector3 pos, float craterSizeInMeters)
@@ -174,6 +177,13 @@ public class TerrainDeformer : MonoBehaviour
             terr.terrainData.SetHeights(xPositions[i], zPositions[i], heights);
         }
     }
+    //=====================================================
+
+    public void DestroyTerrain(Vector3 pos, float craterSizeInMeters)
+    {
+        DeformTerrain(pos, craterSizeInMeters);
+        TextureDeformation(pos, craterSizeInMeters * 1.5f);
+    }
 
     protected void DeformTerrain(Vector3 pos, float craterSizeInMeters)
     {
@@ -215,14 +225,11 @@ public class TerrainDeformer : MonoBehaviour
 
             }
         }
-
         // set the new height
         terr.terrainData.SetHeights(heightMapStartPosX, heightMapStartPosZ, heights);
-
-        xPos = heightMapStartPosX;
-        zPos = heightMapStartPosZ;
+        xPositions.Add(heightMapStartPosX);
+        zPositions.Add(heightMapStartPosZ);
     }
-
 
     protected void TextureDeformation(Vector3 pos, float craterSizeInMeters)
     {
