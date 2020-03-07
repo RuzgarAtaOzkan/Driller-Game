@@ -90,10 +90,8 @@ public class TerrainDeformer : MonoBehaviour
 
     // General Coroutines to apply in start
 
-
     // todo will add updater of drillerpathfindings to applypathfind algorithm
     //Driller bots management part ======================> 
-
     private void ProcessDrillerBots()
     {
         foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
@@ -131,6 +129,7 @@ public class TerrainDeformer : MonoBehaviour
         while (true)
         {
             NormalizeTerrain(driller.position, inds);
+            //Clear all elements in array for performance purposes
             for (int i = 0; i < xPositions.Count; i++)
             {
                 xPositions.RemoveAt(i);
