@@ -66,7 +66,7 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
-        //ProcessCoroutines(); todo still in progress
+        //ProcessCoroutines(); //todo still in progress
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -107,7 +107,26 @@ public class TerrainDeformer : MonoBehaviour
     //============================================
 
     //Terrain normalization part >
-    IEnumerator NormalizeDrillerPositionsOnTerrain()
+    IEnumerator KeepTrackOfDrillerBotsPositions()
+    {
+        while (true)
+        {
+            foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
+            {
+                int drillerBotXPos = (int)drillerPathfinding.transform.position.x;
+                int drillerBotZPos = (int)drillerPathfinding.transform.position.z;
+                int drillerXPos = (int)driller.position.x;
+                int drillerZPos = (int)driller.position.z;
+                xPositions.Add(drillerBotXPos);
+                zPositions.Add(drillerBotZPos);
+                xPositions.Add(drillerXPos);
+                zPositions.Add(drillerZPos);
+            }
+            yield return new WaitForSeconds(0.8f);
+        }
+    }
+
+    IEnumerator NormalizeTerrainMainEnumerator()
     {
         while (true)
         {
@@ -123,7 +142,8 @@ public class TerrainDeformer : MonoBehaviour
 
     private void ProcessCoroutines()
     {
-        StartCoroutine(NormalizeDrillerPositionsOnTerrain());
+        StartCoroutine(KeepTrackOfDrillerBotsPositions());
+        StartCoroutine(NormalizeTerrainMainEnumerator());
     }
 
     protected void NormalizeTerrain(Vector3 pos, float craterSizeInMeters)

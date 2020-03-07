@@ -16,8 +16,8 @@ public class DrillerBotManager : MonoBehaviour
 
     private void ProcessCoroutines()
     {
-        StartCoroutine(KeepTrackOfDrillerBotsInHierarchy());
-        //StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding()); // this coroutine has to be started after minerals generated
+        StartCoroutine(UpdateDrillerPathfindingsInOtherScripts());
+        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding()); // this coroutine has to be started after minerals generated
     }
 
     public IEnumerator UpdateDrillerBotsCountAndApplyPathfinding()
@@ -36,7 +36,7 @@ public class DrillerBotManager : MonoBehaviour
         }
     }
 
-    public IEnumerator KeepTrackOfDrillerBotsInHierarchy()
+    public IEnumerator UpdateDrillerPathfindingsInOtherScripts()
     {
         while (true)
         {
