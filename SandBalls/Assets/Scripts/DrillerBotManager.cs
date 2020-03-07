@@ -24,7 +24,7 @@ public class DrillerBotManager : MonoBehaviour
     {
         while (true)
         {
-            DrillerPathfinding[] drillerPathfindings = FindAllDrillerpathfindingsInScene();
+            DrillerPathfinding[] drillerPathfindings = FindAllDrillerPathfindingsInScene();
             foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
             {
                 if (!drillerPathfinding.isCoroutineStarted)
@@ -40,14 +40,14 @@ public class DrillerBotManager : MonoBehaviour
     {
         while (true)
         {
-            DrillerPathfinding[] drillerPathFindings = FindAllDrillerpathfindingsInScene();
+            DrillerPathfinding[] drillerPathFindings = FindAllDrillerPathfindingsInScene();
             terrainDeformer.drillerPathfindings = drillerPathFindings;
             generateRandomMinerals.drillerPathfindings = drillerPathFindings;
             yield return new WaitForSeconds(1f);
         }
     }
 
-    public DrillerPathfinding[] FindAllDrillerpathfindingsInScene()
+    public DrillerPathfinding[] FindAllDrillerPathfindingsInScene()
     {
         DrillerPathfinding[] drillerPathfindings = FindObjectsOfType<DrillerPathfinding>();
         return drillerPathfindings;
@@ -55,7 +55,7 @@ public class DrillerBotManager : MonoBehaviour
 
     public void ApplyPathfindToAllDrillerPathfindings()
     {
-        foreach (DrillerPathfinding drillerPathfinding in FindAllDrillerpathfindingsInScene()) 
+        foreach (DrillerPathfinding drillerPathfinding in FindAllDrillerPathfindingsInScene()) 
         {
             if (!drillerPathfinding.isCoroutineStarted)
             {
