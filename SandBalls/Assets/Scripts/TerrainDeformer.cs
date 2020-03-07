@@ -45,7 +45,6 @@ public class TerrainDeformer : MonoBehaviour
 
     // todo my part of script
     [SerializeField] Transform driller;
-    DrillerBotManager drillerBotManager;
     public DrillerPathfinding[] drillerPathfindings;
 
     List<int> xPositions = new List<int>();
@@ -55,7 +54,6 @@ public class TerrainDeformer : MonoBehaviour
     void Start()
     {
         terr = this.GetComponent<Terrain>();
-        drillerBotManager = FindObjectOfType<DrillerBotManager>();
         hmWidth = terr.terrainData.heightmapResolution;
         hmHeight = terr.terrainData.heightmapResolution;
         alphaMapWidth = terr.terrainData.alphamapWidth;
