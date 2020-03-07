@@ -21,7 +21,6 @@ public class GenerateRandomMinerals : MonoBehaviour
         mineralsParent = GameObject.Find("MineralsParent");
         GenerateMinerals();
         ProcessCoroutines();
-        drillerBotManager.ApplyPathfindToAllDrillerPathfindings(); // todo will remanage later, Starts coroutines after minerals spawned in scene, first apply of pathfind
     }
 
     public void GenerateMinerals()
@@ -66,6 +65,6 @@ public class GenerateRandomMinerals : MonoBehaviour
     private void ProcessCoroutines()
     {
         StartCoroutine(CheckMineralAmount());
-        
+        StartCoroutine(drillerBotManager.UpdateDrillerBotsCountAndApplyPathfinding());
     }
 }

@@ -66,7 +66,7 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
-        //ProcessTerrainNormalization(); todo still in progress
+        //ProcessCoroutines(); todo still in progress
     }
 
     //this has to be done because terrains for some reason or another terrains don't reset after you run the app
@@ -121,7 +121,7 @@ public class TerrainDeformer : MonoBehaviour
         }
     }
 
-    private void ProcessTerrainNormalization()
+    private void ProcessCoroutines()
     {
         StartCoroutine(NormalizeDrillerPositionsOnTerrain());
     }

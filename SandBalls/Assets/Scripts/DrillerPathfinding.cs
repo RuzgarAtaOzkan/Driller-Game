@@ -85,7 +85,7 @@ public class DrillerPathfinding : MonoBehaviour
         }
     }
 
-    public int FindMinValue(List<int> list)
+    private int FindMinValue(List<int> list)
     {
         if (list.Count == 0) { throw new InvalidOperationException("Empty list"); }
         int minValue = int.MaxValue;
