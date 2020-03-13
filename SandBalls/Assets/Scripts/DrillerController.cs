@@ -6,6 +6,7 @@ public class DrillerController : MonoBehaviour
 {
     Rigidbody rb;
     Terrain terr;
+    float speed = 3f;
 
     private void Start()
     {
@@ -16,7 +17,7 @@ public class DrillerController : MonoBehaviour
 
     void Update()
     {
-        MoveDriller();
+        MoveDriller(speed);
     }
 
     private void PickRandomPosOnTerrain()
@@ -32,12 +33,12 @@ public class DrillerController : MonoBehaviour
         transform.rotation = Quaternion.Euler(90f, transform.rotation.y, transform.rotation.z);
     }
 
-    private void MoveDriller()
+    private void MoveDriller(float speed)
     {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 position = new Vector3(x, 0f, z);
-        rb.MovePosition(rb.position + position * 2f * Time.deltaTime);
+        rb.MovePosition(rb.position + position * speed * Time.deltaTime);
         if (position.magnitude > 0)
         {
             Quaternion rotations = Quaternion.LookRotation(position, Vector3.up);
@@ -46,10 +47,10 @@ public class DrillerController : MonoBehaviour
         }
     }
 
-    private Vector3 ShakeDriller()
+    private Vector3 ShakeDriller(float xShakeMagnitude, float zShakeMagnitude)
     {
-        float xMagnitude = Random.Range(-1f, 1f);
-        float zMagnitude = Random.Range(-1f, 1f);
+        float xMagnitude = Random.Range(-xShakeMagnitude, xShakeMagnitude);
+        float zMagnitude = Random.Range(-zShakeMagnitude, zShakeMagnitude);
         Vector3 shakePos = new Vector3(xMagnitude, 0f, zMagnitude);
         return shakePos;
     }

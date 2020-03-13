@@ -24,6 +24,15 @@ public class DrillerPathfinding : MonoBehaviour
         SpawnOnRandomPosOnTerrain();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Mineral")
+        {
+            //EatMineral(collision);
+            Destroy(collision.gameObject);
+        }
+    }
+
     private void SpawnOnRandomPosOnTerrain()
     {
         float terrainXPos = terr.transform.position.x;
@@ -99,18 +108,13 @@ public class DrillerPathfinding : MonoBehaviour
 
     private void EatMineral(Collision collision)
     {
-        Vector3 drillerScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        Vector3 mineralScale = new Vector3(collision.transform.localScale.x, collision.transform.localScale.y, collision.transform.localScale.z);
-        transform.localScale = new Vector3(drillerScale.x + (mineralScale.x / 2), drillerScale.y + (mineralScale.y / 2), drillerScale.z + (mineralScale.z / 2));
-        terrainDeformer.inds = transform.localScale.x * 4f;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
         if (collision.gameObject.tag == "Mineral")
         {
-            //EatMineral(collision);
-            Destroy(collision.gameObject);
+            Vector3 drillerScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            Vector3 mineralScale = new Vector3(collision.transform.localScale.x, collision.transform.localScale.y, collision.transform.localScale.z);
+            transform.localScale = new Vector3(drillerScale.x + (mineralScale.x / 2), drillerScale.y + (mineralScale.y / 2), drillerScale.z + (mineralScale.z / 2));
+            terrainDeformer.inds = transform.localScale.x * 4f;
         }
     }
+
 }

@@ -19,13 +19,13 @@ public class GenerateRandomMinerals : MonoBehaviour
         drillerBotManager = FindObjectOfType<DrillerBotManager>();
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         mineralsParent = GameObject.Find("MineralsParent");
-        GenerateMinerals();
+        GenerateMinerals(mineralAmount);
         ProcessCoroutines();
     }
 
-    public void GenerateMinerals()
+    public void GenerateMinerals(int amountOfMineralToSpawn)
     {
-        for (int i = 0; i < mineralAmount; i++)
+        for (int i = 0; i < amountOfMineralToSpawn; i++)
         {
             float terrainXPos = terr.transform.position.x;
             float terrainZPos = terr.transform.position.z;
@@ -49,14 +49,14 @@ public class GenerateRandomMinerals : MonoBehaviour
         instantiatedMineral.GetComponent<MeshRenderer>().materials = materialsToPlace;
     }
 
-    private IEnumerator CheckMineralAmount()
+    private IEnumerator CheckMineralAmount(int mineralEdgeAmount)
     {
         while (true)
         {
             GameObject[] mineralAmountInHierarchy = GameObject.FindGameObjectsWithTag("Mineral");
-            if (mineralAmountInHierarchy.Length <= 6)
+            if (mineralAmountInHierarchy.Length <= mineralEdgeAmount)
             {
-                GenerateMinerals();
+                GenerateMinerals(mineralAmount);
             }
             yield return new WaitForSeconds(1f);
         }
@@ -64,7 +64,7 @@ public class GenerateRandomMinerals : MonoBehaviour
 
     private void ProcessCoroutines()
     {
-        StartCoroutine(CheckMineralAmount());
+        StartCoroutine(CheckMineralAmount(6)); // if its below 6 generate random minerals
         //StartCoroutine(drillerBotManager.UpdateDrillerBotsCountAndApplyPathfinding()); // we are already updating pathfinding in drillerBotManager
     }
 }

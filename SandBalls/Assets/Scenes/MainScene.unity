@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetDriller: {fileID: 265629577}
-  offset: {x: 0, y: 35, z: 0}
+  offset: {x: 0, y: 39.05, z: 0}
 --- !u!1 &556112146
 GameObject:
   m_ObjectHideFlags: 0

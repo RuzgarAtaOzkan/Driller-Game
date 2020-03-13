@@ -126,7 +126,7 @@ public class TerrainDeformer : MonoBehaviour
     {
         while (true)
         {
-            NormalizeTerrain(driller.position, inds);
+            NormalizeTerrain(driller.position, inds + 5);
             //Clear all elements in array for performance purposes
             for (int i = 0; i < xPositions.Count; i++)
             {
@@ -239,8 +239,6 @@ public class TerrainDeformer : MonoBehaviour
         }
         // set the new height
         terr.terrainData.SetHeights(heightMapStartPosX, heightMapStartPosZ, heights);
-        xPositions.Add(heightMapStartPosX);
-        zPositions.Add(heightMapStartPosZ);
     }
 
     protected void TextureDeformation(Vector3 pos, float craterSizeInMeters)
