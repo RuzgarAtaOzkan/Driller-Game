@@ -147,3 +147,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a66ce19dc2390374db404323690af78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isCoroutineStarted: 0

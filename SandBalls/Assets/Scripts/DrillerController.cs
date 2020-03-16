@@ -18,19 +18,32 @@ public class DrillerController : MonoBehaviour
     void Update()
     {
         MoveDriller(speed);
+        ControlVelocity(0.0f, 0.0f, 0.0f);
     }
 
     private void PickRandomPosOnTerrain()
     {
+        const float heightToPlace = 2.2f;
+
         float terrainXPos = terr.transform.position.x;
         float terrainZPos = terr.transform.position.z;
+
         float terrainXSize = terr.terrainData.size.x;
         float terrainZSize = terr.terrainData.size.z;
+
         float randomXPosForMineral = Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
         float randomZPosForMineral = Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
-        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
+
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, heightToPlace, randomZPosForMineral);
+
         transform.position = randomTerrainPos;
-        transform.rotation = Quaternion.Euler(90f, transform.rotation.y, transform.rotation.z);
+    }
+
+    private void ControlVelocity(float xVelocity, float yVelocity, float zVelocity)
+    {
+        Vector3 velocity = new Vector3(xVelocity, yVelocity, zVelocity);
+        rb.velocity = velocity;
+        rb.angularVelocity = velocity;
     }
 
     private void MoveDriller(float speed)
@@ -42,8 +55,7 @@ public class DrillerController : MonoBehaviour
         if (position.magnitude > 0)
         {
             Quaternion rotations = Quaternion.LookRotation(position, Vector3.up);
-            Quaternion xRotation = Quaternion.Euler(90f, transform.rotation.y, transform.rotation.z);
-            transform.rotation = rotations * xRotation;
+            transform.rotation = rotations;
         }
     }
 

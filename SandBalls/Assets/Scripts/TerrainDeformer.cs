@@ -64,6 +64,7 @@ public class TerrainDeformer : MonoBehaviour
             heightMapBackup = terr.terrainData.GetHeights(0, 0, hmWidth, hmHeight);
             alphaMapBackup = terr.terrainData.GetAlphamaps(0, 0, alphaMapWidth, alphaMapHeight);
         }
+        driller = GameObject.Find("Driller").transform;
         //ProcessCoroutines(); // managed to normalize every position we want but the game freeze for 1 second, not efficient for performance
     }
 

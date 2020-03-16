@@ -7,20 +7,20 @@ using UnityEngine.AI;
 public class DrillerPathfinding : MonoBehaviour
 {
     NavMeshAgent agent;
-    GameObject mineralsParent; //warning, there has to be a gameobject calles MineralsParent
+    GameObject mineralsParent; 
     Terrain terr; // warning, there has to be game object called Terrain in hierarchy
 
     TerrainDeformer terrainDeformer;
 
     float waitTime; //wait time before finding a new destination target, by dividing target distance with speed of agent
-    public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
+    [HideInInspector] public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
     
     void Start()
     {
         terrainDeformer = FindObjectOfType<TerrainDeformer>(); // todo will remove experimental
         terr = GameObject.Find("Terrain").GetComponent<Terrain>(); // todo might serialize it later
         agent = GetComponent<NavMeshAgent>();
-        mineralsParent = GameObject.Find("MineralsParent");
+        mineralsParent = GameObject.Find("MineralsParent"); // warning, there has to be a gameobject calles MineralsParent
         SpawnOnRandomPosOnTerrain();
     }
 
