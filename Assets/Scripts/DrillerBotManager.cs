@@ -12,6 +12,11 @@ public class DrillerBotManager : MonoBehaviour
         ProcessCoroutines();
     }
 
+    private void Update()
+    {
+        ApplyPathfindingToAllDrillerPathfindings();
+    }
+
     private void ProcessCoroutines()
     {
         StartCoroutine(UpdateDrillerPathfindingsInOtherScripts(2f));
@@ -48,6 +53,17 @@ public class DrillerBotManager : MonoBehaviour
     {
         DrillerPathfinding[] drillerPathfindings = FindObjectsOfType<DrillerPathfinding>();
         return drillerPathfindings;
+    }
+
+    private void ApplyPathfindingToAllDrillerPathfindings() // warning overwrite the enumerators on drillerPathfindings, not prefered
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            foreach (DrillerPathfinding drillerPathfinding in FindAllDrillerPathfindingsInScene())
+            {
+                StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral());
+            }
+        }
     }
 
 }

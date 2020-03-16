@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class DrillerController : MonoBehaviour
 {
+    float speed = 6f;
+    List<GameObject> drillerHeads = new List<GameObject>();
     Rigidbody rb;
     Terrain terr;
-    float speed = 6f;
 
     private void Start()
     {
-        terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         rb = GetComponent<Rigidbody>();
+        terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         SpawnOnRandomPosOnTerrain(20f);
+        StartCoroutine(UpdateAllDrillerHeads(2f));
     }
 
     void Update()
@@ -20,6 +22,7 @@ public class DrillerController : MonoBehaviour
         MoveDriller(speed);
         //ControlVelocity(0.0f, 0.0f, 0.0f);
         ControlHeight(2.2f);
+        RotateAllDrillerHeads(8f);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -77,8 +80,52 @@ public class DrillerController : MonoBehaviour
     {
         float xMagnitude = Random.Range(-xShakeMagnitude, xShakeMagnitude);
         float zMagnitude = Random.Range(-zShakeMagnitude, zShakeMagnitude);
-        Vector3 shakePos = new Vector3(xMagnitude, 0f, zMagnitude);
+        Vector3 shakePos = new Vector3(xMagnitude, transform.position.y, zMagnitude);
         return shakePos;
     }
 
+    private IEnumerator UpdateAllDrillerHeads(float updateTime)
+    {
+        while (true)
+        {
+            FindAllDrillerHeads("Cylinder.001");
+            yield return new WaitForSeconds(updateTime);
+        }
+    }
+
+    private List<GameObject> FindAllDrillerHeads(string gameObjectName)
+    {
+        GameObject[] gameObjects = FindObjectsOfType<GameObject>();
+        for (int i = 0; i < gameObjects.Length; i++)
+        {
+            if (gameObjects[i].name == gameObjectName && !drillerHeads.Contains(gameObjects[i])) 
+            { 
+                drillerHeads.Add(gameObjects[i]); 
+            }
+
+            if (gameObjects[i] == null) 
+            { 
+                drillerHeads.Remove(gameObjects[i]); 
+            }
+        }
+        return drillerHeads;
+    }
+
+    private void RotateAllDrillerHeads(float rotateSpeed)
+    {
+        try
+        {
+            foreach (GameObject drillerHead in drillerHeads)
+            {
+                drillerHead.transform.Rotate(Vector3.up * rotateSpeed);
+            }
+        }
+        catch
+        {
+            foreach (GameObject drillerHead in drillerHeads)
+            {
+                Debug.LogWarning("drillerHead: " + drillerHead + " is missing");
+            }
+        }
+    }
 }

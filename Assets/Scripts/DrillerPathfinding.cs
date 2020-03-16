@@ -27,7 +27,7 @@ public class DrillerPathfinding : MonoBehaviour
 
     private void Update()
     {
-        drillerController.ControlVelocity(0f, 0f, 0f);
+        //drillerController.ControlVelocity(0f, 0f, 0f);
         drillerController.ControlHeight(2.2f);
     }
 
