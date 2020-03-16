@@ -9,7 +9,6 @@ public class DrillerBotManager : MonoBehaviour
     private void Start()
     {
         terrainDeformer = FindObjectOfType<TerrainDeformer>();
-        generateRandomMinerals = FindObjectOfType<GenerateRandomMinerals>();
         ProcessCoroutines();
     }
 

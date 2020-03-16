@@ -25,7 +25,7 @@ public class DrillerPathfinding : MonoBehaviour
         terr = GameObject.Find("Terrain").GetComponent<Terrain>(); // todo might serialize it later
         agent = GetComponent<NavMeshAgent>();
         mineralsParent = GameObject.Find("MineralsParent"); // warning, there has to be a gameobject calles MineralsParent
-        SpawnOnRandomPosOnTerrain(20f, 2.2f);
+        SpawnOnRandomPosOnTerrain(20f); 
     }
 
     private void Update()
@@ -43,7 +43,7 @@ public class DrillerPathfinding : MonoBehaviour
         }
     }
 
-    private void SpawnOnRandomPosOnTerrain(float offset, float yPos)
+    private void SpawnOnRandomPosOnTerrain(float offset)
     {
         float terrainXPos = terr.transform.position.x;
         float terrainZPos = terr.transform.position.z;
@@ -51,7 +51,7 @@ public class DrillerPathfinding : MonoBehaviour
         float terrainZSize = terr.terrainData.size.z;
         float randomXPosForMineral = UnityEngine.Random.Range(terrainXPos + offset, terrainXPos + terrainXSize - offset);
         float randomZPosForMineral = UnityEngine.Random.Range(terrainZPos + offset, terrainZPos + terrainZSize - offset);
-        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, yPos, randomZPosForMineral);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, transform.position.y, randomZPosForMineral);
         transform.position = randomTerrainPos;
     }
 

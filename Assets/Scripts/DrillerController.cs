@@ -12,17 +12,17 @@ public class DrillerController : MonoBehaviour
     {
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         rb = GetComponent<Rigidbody>();
-        PickRandomPosOnTerrain(20f, 2.2f);
+        SpawnOnRandomPosOnTerrain(20f);
     }
 
     void Update()
     {
         MoveDriller(speed);
-        ControlVelocity(0.0f, 0.0f, 0.0f);
+        //ControlVelocity(0.0f, 0.0f, 0.0f);
         ControlHeight(2.2f);
     }
 
-    private void PickRandomPosOnTerrain(float offset, float yPos)
+    public void SpawnOnRandomPosOnTerrain(float offset)
     {
         float terrainXPos = terr.transform.position.x;
         float terrainZPos = terr.transform.position.z;
@@ -30,7 +30,7 @@ public class DrillerController : MonoBehaviour
         float terrainZSize = terr.terrainData.size.z;
         float randomXPosForMineral = Random.Range(terrainXPos + offset, terrainXPos + terrainXSize - offset);
         float randomZPosForMineral = Random.Range(terrainZPos + offset, terrainZPos + terrainZSize - offset);
-        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, yPos, randomZPosForMineral);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, transform.position.y, randomZPosForMineral);
         transform.position = randomTerrainPos;
     }
 

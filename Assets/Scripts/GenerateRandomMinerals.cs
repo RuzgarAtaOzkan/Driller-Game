@@ -15,11 +15,11 @@ public class GenerateRandomMinerals : MonoBehaviour
     {
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         mineralsParent = GameObject.Find("MineralsParent");
-        GenerateMinerals(mineralAmount);
+        GenerateMinerals(mineralAmount, 10f);
         ProcessCoroutines();
     }
 
-    public void GenerateMinerals(int amountOfMineralToSpawn)
+    public void GenerateMinerals(int amountOfMineralToSpawn, float offset)
     {
         for (int i = 0; i < amountOfMineralToSpawn; i++)
         {
@@ -27,8 +27,8 @@ public class GenerateRandomMinerals : MonoBehaviour
             float terrainZPos = terr.transform.position.z;
             float terrainXSize = terr.terrainData.size.x;
             float terrainZSize = terr.terrainData.size.z;
-            float randomXPosForMineral = Random.Range(terrainXPos + 20f, terrainXPos + terrainXSize - 20f);
-            float randomZPosForMineral = Random.Range(terrainZPos + 20f, terrainZPos + terrainZSize - 20f);
+            float randomXPosForMineral = Random.Range(terrainXPos + offset, terrainXPos + terrainXSize - offset);
+            float randomZPosForMineral = Random.Range(terrainZPos + offset, terrainZPos + terrainZSize - offset);
             Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
             GameObject instantiatedMineral = Instantiate(mineral, randomTerrainPos, Quaternion.identity);
             PickRandomMineralColor(instantiatedMineral);
@@ -45,21 +45,21 @@ public class GenerateRandomMinerals : MonoBehaviour
         instantiatedMineral.GetComponent<MeshRenderer>().materials = materialsToPlace;
     }
 
-    private IEnumerator CheckMineralAmount(int mineralEdgeAmount)
+    private IEnumerator CheckMineralAmount(int mineralEdgeAmount, float updateTime)
     {
         while (true)
         {
             GameObject[] mineralAmountInHierarchy = GameObject.FindGameObjectsWithTag("Mineral");
             if (mineralAmountInHierarchy.Length <= mineralEdgeAmount)
             {
-                GenerateMinerals(mineralAmount);
+                GenerateMinerals(mineralAmount, 10f);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(updateTime);
         }
     }
 
     private void ProcessCoroutines()
     {
-        StartCoroutine(CheckMineralAmount(6)); // if its below 6 generate random minerals
+        StartCoroutine(CheckMineralAmount(6, 2f)); // if its below 6 generate random minerals
     }
 }

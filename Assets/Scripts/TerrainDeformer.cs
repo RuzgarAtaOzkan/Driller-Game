@@ -31,7 +31,7 @@ using System.Collections.Generic;
 
 public class TerrainDeformer : MonoBehaviour
 {
-    public int terrainDeformationTextureNum = 1;
+    [HideInInspector] public int terrainDeformationTextureNum = 1;
     private Terrain terr; // terrain to modify
     protected int hmWidth; // heightmap width
     protected int hmHeight; // heightmap height
@@ -80,7 +80,7 @@ public class TerrainDeformer : MonoBehaviour
     }
 
     public float inds;
-    public Transform go;
+    [HideInInspector] public Transform go;
 
     private void Update()
     {
@@ -88,10 +88,6 @@ public class TerrainDeformer : MonoBehaviour
         ProcessDrillerBots();
     }
 
-    // General Coroutines to apply in start
-
-    // todo will add updater of drillerpathfindings to applypathfind algorithm
-    //Driller bots management part ======================> 
     private void ProcessDrillerBots()
     {
         foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
@@ -103,47 +99,6 @@ public class TerrainDeformer : MonoBehaviour
         }
     }
     //============================================
-
-    //Terrain normalization part >
-    IEnumerator KeepTrackOfDrillerBotsPositions()
-    {
-        while (true)
-        {
-            foreach (DrillerPathfinding drillerPathfinding in drillerPathfindings)
-            {
-                int drillerBotXPos = (int)drillerPathfinding.transform.position.x;
-                int drillerBotZPos = (int)drillerPathfinding.transform.position.z;
-                int drillerXPos = (int)driller.position.x;
-                int drillerZPos = (int)driller.position.z;
-                xPositions.Add(drillerBotXPos);
-                zPositions.Add(drillerBotZPos);
-                xPositions.Add(drillerXPos);
-                zPositions.Add(drillerZPos);
-            }
-            yield return new WaitForSeconds(0.8f);
-        }
-    }
-
-    IEnumerator NormalizeTerrainMainEnumerator()
-    {
-        while (true)
-        {
-            NormalizeTerrain(driller.position, inds + 5);
-            //Clear all elements in array for performance purposes
-            for (int i = 0; i < xPositions.Count; i++)
-            {
-                xPositions.RemoveAt(i);
-                zPositions.RemoveAt(i);
-            }
-            yield return new WaitForSeconds(15f);
-        }
-    }
-
-    private void ProcessCoroutines()
-    {
-        StartCoroutine(KeepTrackOfDrillerBotsPositions());
-        StartCoroutine(NormalizeTerrainMainEnumerator());
-    }
 
     protected void NormalizeTerrain(Vector3 pos, float craterSizeInMeters)
     {
