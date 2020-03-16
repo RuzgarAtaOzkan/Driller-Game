@@ -39,7 +39,7 @@ public class DrillerController : MonoBehaviour
         transform.position = randomTerrainPos;
     }
 
-    private void ControlVelocity(float xVelocity, float yVelocity, float zVelocity)
+    public void ControlVelocity(float xVelocity, float yVelocity, float zVelocity)
     {
         Vector3 velocity = new Vector3(xVelocity, yVelocity, zVelocity);
         rb.velocity = velocity;

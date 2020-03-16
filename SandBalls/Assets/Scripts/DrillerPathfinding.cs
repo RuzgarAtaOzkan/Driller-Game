@@ -10,18 +10,27 @@ public class DrillerPathfinding : MonoBehaviour
     GameObject mineralsParent; 
     Terrain terr; // warning, there has to be game object called Terrain in hierarchy
 
+    DrillerController drillerController;
     TerrainDeformer terrainDeformer;
 
     float waitTime; //wait time before finding a new destination target, by dividing target distance with speed of agent
-    [HideInInspector] public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
+
+    [HideInInspector] 
+    public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
     
     void Start()
     {
-        terrainDeformer = FindObjectOfType<TerrainDeformer>(); // todo will remove experimental
+        terrainDeformer = FindObjectOfType<TerrainDeformer>();
+        drillerController = FindObjectOfType<DrillerController>(); // todo will remove experimental
         terr = GameObject.Find("Terrain").GetComponent<Terrain>(); // todo might serialize it later
         agent = GetComponent<NavMeshAgent>();
         mineralsParent = GameObject.Find("MineralsParent"); // warning, there has to be a gameobject calles MineralsParent
         SpawnOnRandomPosOnTerrain();
+    }
+
+    private void Update()
+    {
+        drillerController.ControlVelocity(0f, 0f, 0f);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -41,7 +50,7 @@ public class DrillerPathfinding : MonoBehaviour
         float terrainZSize = terr.terrainData.size.z;
         float randomXPosForMineral = UnityEngine.Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
         float randomZPosForMineral = UnityEngine.Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
-        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.2f, randomZPosForMineral);
         transform.position = randomTerrainPos;
     }
 
