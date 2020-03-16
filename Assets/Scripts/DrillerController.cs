@@ -6,44 +6,50 @@ public class DrillerController : MonoBehaviour
 {
     Rigidbody rb;
     Terrain terr;
-    float speed = 3f;
+    float speed = 6f;
 
     private void Start()
     {
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         rb = GetComponent<Rigidbody>();
-        PickRandomPosOnTerrain();
+        PickRandomPosOnTerrain(20f, 2.2f);
     }
 
     void Update()
     {
         MoveDriller(speed);
         ControlVelocity(0.0f, 0.0f, 0.0f);
+        ControlHeight(2.2f);
     }
 
-    private void PickRandomPosOnTerrain()
+    private void PickRandomPosOnTerrain(float offset, float yPos)
     {
-        const float heightToPlace = 2.2f;
-
         float terrainXPos = terr.transform.position.x;
         float terrainZPos = terr.transform.position.z;
-
         float terrainXSize = terr.terrainData.size.x;
         float terrainZSize = terr.terrainData.size.z;
-
-        float randomXPosForMineral = Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
-        float randomZPosForMineral = Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
-
-        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, heightToPlace, randomZPosForMineral);
-
+        float randomXPosForMineral = Random.Range(terrainXPos + offset, terrainXPos + terrainXSize - offset);
+        float randomZPosForMineral = Random.Range(terrainZPos + offset, terrainZPos + terrainZSize - offset);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, yPos, randomZPosForMineral);
         transform.position = randomTerrainPos;
     }
 
-    public void ControlVelocity(float xVelocity, float yVelocity, float zVelocity)
+    public Vector3 ControlVelocity(float xVelocity, float yVelocity, float zVelocity)
     {
         Vector3 velocity = new Vector3(xVelocity, yVelocity, zVelocity);
         rb.velocity = velocity;
         rb.angularVelocity = velocity;
+        return velocity;
+    }
+
+    public float ControlHeight(float yPosition)
+    {
+        float xPos = transform.position.x;
+        float yPos = yPosition;
+        float zPos = transform.position.z;
+        Vector3 position = new Vector3(xPos, yPos, zPos);
+        transform.position = position;
+        return yPosition;
     }
 
     private void MoveDriller(float speed)

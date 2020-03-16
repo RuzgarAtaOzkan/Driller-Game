@@ -7,16 +7,12 @@ public class GenerateRandomMinerals : MonoBehaviour
     int mineralAmount = 60;
     Terrain terr;
     GameObject mineralsParent;
-    DrillerBotManager drillerBotManager;
-
-    public DrillerPathfinding[] drillerPathfindings;
 
     [SerializeField] GameObject mineral;
     [SerializeField] Material[] materials;
     
     void Start()
     {
-        drillerBotManager = FindObjectOfType<DrillerBotManager>();
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         mineralsParent = GameObject.Find("MineralsParent");
         GenerateMinerals(mineralAmount);
@@ -31,8 +27,8 @@ public class GenerateRandomMinerals : MonoBehaviour
             float terrainZPos = terr.transform.position.z;
             float terrainXSize = terr.terrainData.size.x;
             float terrainZSize = terr.terrainData.size.z;
-            float randomXPosForMineral = Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
-            float randomZPosForMineral = Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
+            float randomXPosForMineral = Random.Range(terrainXPos + 20f, terrainXPos + terrainXSize - 20f);
+            float randomZPosForMineral = Random.Range(terrainZPos + 20f, terrainZPos + terrainZSize - 20f);
             Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.6f, randomZPosForMineral);
             GameObject instantiatedMineral = Instantiate(mineral, randomTerrainPos, Quaternion.identity);
             PickRandomMineralColor(instantiatedMineral);
@@ -65,6 +61,5 @@ public class GenerateRandomMinerals : MonoBehaviour
     private void ProcessCoroutines()
     {
         StartCoroutine(CheckMineralAmount(6)); // if its below 6 generate random minerals
-        //StartCoroutine(drillerBotManager.UpdateDrillerBotsCountAndApplyPathfinding()); // we are already updating pathfinding in drillerBotManager
     }
 }

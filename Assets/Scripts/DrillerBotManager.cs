@@ -5,7 +5,6 @@ using UnityEngine;
 public class DrillerBotManager : MonoBehaviour
 {
     TerrainDeformer terrainDeformer;
-    GenerateRandomMinerals generateRandomMinerals;
 
     private void Start()
     {
@@ -16,11 +15,11 @@ public class DrillerBotManager : MonoBehaviour
 
     private void ProcessCoroutines()
     {
-        StartCoroutine(UpdateDrillerPathfindingsInOtherScripts());
-        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding()); // this coroutine has to be started after minerals generated
+        StartCoroutine(UpdateDrillerPathfindingsInOtherScripts(2f));
+        StartCoroutine(UpdateDrillerBotsCountAndApplyPathfinding(2f)); // this coroutine has to be started after minerals generated
     }
 
-    public IEnumerator UpdateDrillerBotsCountAndApplyPathfinding()
+    public IEnumerator UpdateDrillerBotsCountAndApplyPathfinding(float updateTime)
     {
         while (true)
         {
@@ -32,18 +31,17 @@ public class DrillerBotManager : MonoBehaviour
                     StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral());
                 }
             }
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(updateTime);
         }
     }
 
-    public IEnumerator UpdateDrillerPathfindingsInOtherScripts()
+    public IEnumerator UpdateDrillerPathfindingsInOtherScripts(float updateTime)
     {
         while (true)
         {
             DrillerPathfinding[] drillerPathFindings = FindAllDrillerPathfindingsInScene();
             terrainDeformer.drillerPathfindings = drillerPathFindings;
-            generateRandomMinerals.drillerPathfindings = drillerPathFindings;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(updateTime);
         }
     }
 
@@ -53,14 +51,4 @@ public class DrillerBotManager : MonoBehaviour
         return drillerPathfindings;
     }
 
-    public void ApplyPathfindToAllDrillerPathfindings()
-    {
-        foreach (DrillerPathfinding drillerPathfinding in FindAllDrillerPathfindingsInScene()) 
-        {
-            if (!drillerPathfinding.isCoroutineStarted)
-            {
-                StartCoroutine(drillerPathfinding.PickRandomPosOrClosestMineral());
-            }
-        }
-    }
 }

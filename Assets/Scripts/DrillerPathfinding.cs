@@ -25,12 +25,13 @@ public class DrillerPathfinding : MonoBehaviour
         terr = GameObject.Find("Terrain").GetComponent<Terrain>(); // todo might serialize it later
         agent = GetComponent<NavMeshAgent>();
         mineralsParent = GameObject.Find("MineralsParent"); // warning, there has to be a gameobject calles MineralsParent
-        SpawnOnRandomPosOnTerrain();
+        SpawnOnRandomPosOnTerrain(20f, 2.2f);
     }
 
     private void Update()
     {
         drillerController.ControlVelocity(0f, 0f, 0f);
+        drillerController.ControlHeight(2.2f);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -42,15 +43,15 @@ public class DrillerPathfinding : MonoBehaviour
         }
     }
 
-    private void SpawnOnRandomPosOnTerrain()
+    private void SpawnOnRandomPosOnTerrain(float offset, float yPos)
     {
         float terrainXPos = terr.transform.position.x;
         float terrainZPos = terr.transform.position.z;
         float terrainXSize = terr.terrainData.size.x;
         float terrainZSize = terr.terrainData.size.z;
-        float randomXPosForMineral = UnityEngine.Random.Range(terrainXPos + 10f, terrainXPos + terrainXSize - 10f);
-        float randomZPosForMineral = UnityEngine.Random.Range(terrainZPos + 10f, terrainZPos + terrainZSize - 10f);
-        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, 2.2f, randomZPosForMineral);
+        float randomXPosForMineral = UnityEngine.Random.Range(terrainXPos + offset, terrainXPos + terrainXSize - offset);
+        float randomZPosForMineral = UnityEngine.Random.Range(terrainZPos + offset, terrainZPos + terrainZSize - offset);
+        Vector3 randomTerrainPos = new Vector3(randomXPosForMineral, yPos, randomZPosForMineral);
         transform.position = randomTerrainPos;
     }
 
@@ -60,13 +61,13 @@ public class DrillerPathfinding : MonoBehaviour
         while (true)
         {
             int randomTarget = UnityEngine.Random.Range(0, 2);
-            if (randomTarget < 1f) { PickRandomPosOnTerrain(); }
+            if (randomTarget < 1f) { PickRandomPosOnTerrain(20f); }
             else if (randomTarget >= 1f) { PickClosestMineralOnTerrain(); }
             yield return new WaitForSeconds(waitTime);
         }
     }
 
-    private void PickRandomPosOnTerrain()
+    private void PickRandomPosOnTerrain(float offset)
     {
         if (this != null)
         {
@@ -74,10 +75,11 @@ public class DrillerPathfinding : MonoBehaviour
             float terrainZPos = terr.transform.position.z;
             float terrainXSize = terr.terrainData.size.x;
             float terrainZSize = terr.terrainData.size.z;
-            float randomXPosOnTerrain = UnityEngine.Random.Range(terrainXPos + 10f, terrainXPos + (terrainXSize - 10f));
-            float randomZPosOnTerrain = UnityEngine.Random.Range(terrainZPos + 10f, terrainZSize + (terrainZSize - 10f));
+            float randomXPosOnTerrain = UnityEngine.Random.Range(terrainXPos + offset, terrainXPos + (terrainXSize - offset));
+            float randomZPosOnTerrain = UnityEngine.Random.Range(terrainZPos + offset, terrainZPos + (terrainZSize - offset));
             Vector3 randomPos = new Vector3(randomXPosOnTerrain, transform.position.y, randomZPosOnTerrain);
             agent.SetDestination(randomPos);
+            Debug.DrawLine(transform.position, randomPos, Color.red, waitTime);
             waitTime = Vector3.Distance(transform.position, randomPos) / agent.speed;
             if (waitTime > 10f) { waitTime = 1f; }
         }
@@ -99,6 +101,7 @@ public class DrillerPathfinding : MonoBehaviour
                 minValue = finalMinValue;
                 waitTime = Vector3.Distance(transform.position, mineral.position) / agent.speed;
                 agent.SetDestination(mineral.position);
+                Debug.DrawLine(transform.position, mineral.position, Color.red, waitTime);
             }
         }
     }

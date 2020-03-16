@@ -44,8 +44,9 @@ public class TerrainDeformer : MonoBehaviour
     private float[,,] alphaMapBackup;
 
     // todo my part of script
-    [SerializeField] Transform driller;
-    public DrillerPathfinding[] drillerPathfindings;
+    Transform driller;
+
+    [HideInInspector] public DrillerPathfinding[] drillerPathfindings;
 
     List<int> xPositions = new List<int>();
     List<int> zPositions = new List<int>();
