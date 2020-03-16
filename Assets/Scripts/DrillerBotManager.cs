@@ -55,7 +55,7 @@ public class DrillerBotManager : MonoBehaviour
         return drillerPathfindings;
     }
 
-    private void ApplyPathfindingToAllDrillerPathfindings() // warning overwrite the enumerators on drillerPathfindings, not prefered
+    private void ApplyPathfindingToAllDrillerPathfindings() // warning, overwrite the enumerators on drillerPathfindings, not prefered
     {
         if (Input.GetKeyDown(KeyCode.P))
         {

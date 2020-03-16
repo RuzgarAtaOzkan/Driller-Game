@@ -20,16 +20,20 @@ public class DrillerController : MonoBehaviour
     void Update()
     {
         MoveDriller(speed);
-        //ControlVelocity(0.0f, 0.0f, 0.0f);
+        ControlVelocity(0.0f, 0.0f, 0.0f);
         ControlHeight(2.2f);
         RotateAllDrillerHeads(8f);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Mineral")
+        if (collision.gameObject.tag == "Mineral" && collision.gameObject.name != "Driller Bot")
         {
             Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.name == "Driller Bot")
+        {
+            Debug.Log("driller collided");
         }
     }
 
@@ -78,9 +82,17 @@ public class DrillerController : MonoBehaviour
 
     private Vector3 ShakeDriller(float xShakeMagnitude, float zShakeMagnitude)
     {
-        float xMagnitude = Random.Range(-xShakeMagnitude, xShakeMagnitude);
-        float zMagnitude = Random.Range(-zShakeMagnitude, zShakeMagnitude);
-        Vector3 shakePos = new Vector3(xMagnitude, transform.position.y, zMagnitude);
+        float defaultXValue = xShakeMagnitude - xShakeMagnitude;
+        float defaultZValue = zShakeMagnitude - zShakeMagnitude;
+
+        float randomXValue = UnityEngine.Random.Range(-xShakeMagnitude, xShakeMagnitude);
+        float randomZValue = UnityEngine.Random.Range(-zShakeMagnitude, zShakeMagnitude);
+
+        float lerpedXValue = Mathf.Lerp(defaultXValue, randomXValue, Time.deltaTime);
+        float lerpedZValue = Mathf.Lerp(defaultZValue, randomZValue, Time.deltaTime);
+
+        Vector3 shakePos = new Vector3(lerpedXValue, transform.position.y, lerpedZValue);
+
         return shakePos;
     }
 
@@ -103,7 +115,7 @@ public class DrillerController : MonoBehaviour
                 drillerHeads.Add(gameObjects[i]); 
             }
 
-            if (gameObjects[i] == null) 
+            if (gameObjects[i] == null && gameObjects[i].name != gameObjectName) // clear drillerHeads gameObjects list 
             { 
                 drillerHeads.Remove(gameObjects[i]); 
             }
