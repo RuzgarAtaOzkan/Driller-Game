@@ -22,6 +22,14 @@ public class DrillerController : MonoBehaviour
         ControlHeight(2.2f);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Mineral")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
     public void SpawnOnRandomPosOnTerrain(float offset)
     {
         float terrainXPos = terr.transform.position.x;
@@ -73,11 +81,4 @@ public class DrillerController : MonoBehaviour
         return shakePos;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Mineral")
-        {
-            Destroy(collision.gameObject);
-        }
-    }
 }

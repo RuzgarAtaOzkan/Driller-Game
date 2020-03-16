@@ -38,10 +38,13 @@ public class GenerateRandomMinerals : MonoBehaviour
 
     private void PickRandomMineralColor(GameObject instantiatedMineral)
     {
+        int randomNumber = Random.Range(0, materials.Length);
         Material[] materialsToPlace = new Material[instantiatedMineral.GetComponent<MeshRenderer>().materials.Length];
-        int ramdonNumber = Random.Range(0, materials.Length);
-        Material randomMaterial = materials[ramdonNumber];
-        for (int j = 0; j < materialsToPlace.Length; j++) { materialsToPlace[j] = randomMaterial; }
+        Material randomMaterial = materials[randomNumber];
+        for (int j = 0; j < materialsToPlace.Length; j++) 
+        {
+            materialsToPlace[j] = randomMaterial; 
+        }
         instantiatedMineral.GetComponent<MeshRenderer>().materials = materialsToPlace;
     }
 

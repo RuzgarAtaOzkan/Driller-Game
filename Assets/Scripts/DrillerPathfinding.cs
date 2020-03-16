@@ -6,17 +6,14 @@ using UnityEngine.AI;
 
 public class DrillerPathfinding : MonoBehaviour
 {
+    float waitTime; //wait time before finding a new destination target, by dividing target distance with speed of agent
+    [HideInInspector] public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
     NavMeshAgent agent;
-    GameObject mineralsParent; 
-    Terrain terr; // warning, there has to be game object called Terrain in hierarchy
 
     DrillerController drillerController;
     TerrainDeformer terrainDeformer;
-
-    float waitTime; //wait time before finding a new destination target, by dividing target distance with speed of agent
-
-    [HideInInspector] 
-    public bool isCoroutineStarted = false; // check if coroutine started to avoid overwrite the enumerator
+    GameObject mineralsParent;
+    Terrain terr; // warning, there has to be game object called Terrain in hierarchy
     
     void Start()
     {
