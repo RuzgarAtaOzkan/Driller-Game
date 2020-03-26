@@ -4,31 +4,39 @@ using UnityEngine;
 
 public class DrillerController : MonoBehaviour
 {
-    float speed = 6f;
+    TerrainDeformer terrainDeformer;
+    CameraFollow cameraFollow;
+
     List<GameObject> drillerHeads = new List<GameObject>();
     Rigidbody rb;
     Terrain terr;
 
+    float speed = 4f;
+
     private void Start()
     {
+        cameraFollow = FindObjectOfType<CameraFollow>();
+        terrainDeformer = FindObjectOfType<TerrainDeformer>();
         rb = GetComponent<Rigidbody>();
         terr = GameObject.Find("Terrain").GetComponent<Terrain>();
         SpawnOnRandomPosOnTerrain(20f);
         StartCoroutine(UpdateAllDrillerHeads(2f));
+        cameraFollow.Start();
     }
 
     void Update()
     {
         MoveDriller(speed);
-        ControlVelocity(0.0f, 0.0f, 0.0f);
-        ControlHeight(2.2f);
-        RotateAllDrillerHeads(8f);
+        ControlHeight(1.08f);
+        ControlVelocity(0f, 0f, 0f);
+        RotateAllDrillerHeads(9f);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Mineral" && collision.gameObject.name != "Driller Bot")
         {
+            EatMineral(collision, 25f);
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.name == "Driller Bot")
@@ -71,7 +79,7 @@ public class DrillerController : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        Vector3 position = new Vector3(x, 0f, z);
+        Vector3 position = new Vector3(x, transform.position.y, z);
         rb.MovePosition(rb.position + position * speed * Time.deltaTime);
         if (position.magnitude > 0)
         {
@@ -84,16 +92,26 @@ public class DrillerController : MonoBehaviour
     {
         float defaultXValue = xShakeMagnitude - xShakeMagnitude;
         float defaultZValue = zShakeMagnitude - zShakeMagnitude;
-
         float randomXValue = UnityEngine.Random.Range(-xShakeMagnitude, xShakeMagnitude);
         float randomZValue = UnityEngine.Random.Range(-zShakeMagnitude, zShakeMagnitude);
-
         float lerpedXValue = Mathf.Lerp(defaultXValue, randomXValue, Time.deltaTime);
         float lerpedZValue = Mathf.Lerp(defaultZValue, randomZValue, Time.deltaTime);
-
         Vector3 shakePos = new Vector3(lerpedXValue, transform.position.y, lerpedZValue);
-
         return shakePos;
+    }
+
+    public Vector3 EatMineral(Collision collision, float mineralDivideValue) // second parameter determines which should we divide the driller scale width
+    {
+        if (collision.gameObject.tag == "Mineral" && collision.gameObject.name != "Driller Bot")
+        {
+            Vector3 drillerScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            Vector3 mineralScale = new Vector3(collision.transform.localScale.x, collision.transform.localScale.y, collision.transform.localScale.z);
+            Vector3 newScaleToApply = new Vector3(drillerScale.x + (mineralScale.x / mineralDivideValue), transform.localScale.y, drillerScale.z + (mineralScale.z / mineralDivideValue));
+            terrainDeformer.inds += 1.5f;
+            cameraFollow.IncreaseCamFov();
+            transform.localScale = newScaleToApply;
+        }
+        return transform.localScale;
     }
 
     private IEnumerator UpdateAllDrillerHeads(float updateTime)
@@ -120,6 +138,7 @@ public class DrillerController : MonoBehaviour
                 drillerHeads.Remove(gameObjects[i]); 
             }
         }
+        Debug.Log(drillerHeads);
         return drillerHeads;
     }
 

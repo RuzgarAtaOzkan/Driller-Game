@@ -27,15 +27,15 @@ public class DrillerPathfinding : MonoBehaviour
 
     private void Update()
     {
-        //drillerController.ControlVelocity(0f, 0f, 0f);
+        drillerController.ControlVelocity(0f, 0f, 0f);
         drillerController.ControlHeight(2.2f);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Mineral")
+        if (collision.gameObject.tag == "Mineral" && collision.gameObject.name != "Driller")
         {
-            //EatMineral(collision);
+            drillerController.EatMineral(collision, 25f);
             Destroy(collision.gameObject);
         }
     }
@@ -76,7 +76,6 @@ public class DrillerPathfinding : MonoBehaviour
             float randomZPosOnTerrain = UnityEngine.Random.Range(terrainZPos + offset, terrainZPos + (terrainZSize - offset));
             Vector3 randomPos = new Vector3(randomXPosOnTerrain, transform.position.y, randomZPosOnTerrain);
             agent.SetDestination(randomPos);
-            Debug.DrawLine(transform.position, randomPos, Color.red, waitTime);
             waitTime = Vector3.Distance(transform.position, randomPos) / agent.speed;
             if (waitTime > 10f) { waitTime = 1f; }
         }
@@ -98,7 +97,6 @@ public class DrillerPathfinding : MonoBehaviour
                 minValue = finalMinValue;
                 waitTime = Vector3.Distance(transform.position, mineral.position) / agent.speed;
                 agent.SetDestination(mineral.position);
-                Debug.DrawLine(transform.position, mineral.position, Color.red, waitTime);
             }
         }
     }
@@ -113,17 +111,6 @@ public class DrillerPathfinding : MonoBehaviour
             if (value < minValue) { minValue = value; }
         }
         return minValue;
-    }
-
-    private void EatMineral(Collision collision)
-    {
-        if (collision.gameObject.tag == "Mineral")
-        {
-            Vector3 drillerScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            Vector3 mineralScale = new Vector3(collision.transform.localScale.x, collision.transform.localScale.y, collision.transform.localScale.z);
-            transform.localScale = new Vector3(drillerScale.x + (mineralScale.x / 2), drillerScale.y + (mineralScale.y / 2), drillerScale.z + (mineralScale.z / 2));
-            terrainDeformer.inds = transform.localScale.x * 4f;
-        }
     }
 
 }
